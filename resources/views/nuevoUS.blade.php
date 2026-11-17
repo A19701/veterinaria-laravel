@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registro - Healthy Pets</title>
+  <link rel="stylesheet" href="{{ asset('css/global.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/nuevoUS.css') }}">
+</head>
+<body class="auth-body"> <!--la clase para centrar el formulario en medio de la pantalla y aplicar el fondo-->
+
+    <div class="auth-wrapper">
+        <!--Lado izquierdo:diseño y Logo-->
+        <div class="auth-sidebar">
+            <div class="logo-container">
+                <img src="logo-V.png" alt="Logo Healthy Pets" class="logo-img">
+                <div class="logo-text">
+                    <h2>Healthy Pets</h2>
+                    <span>Clínica Veterinaria</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lado Derecho: Formulario de Registro -->
+        <div class="auth-main">
+            <!-- Icono decorativo superior derecho -->
+            <div class="top-icon">
+                <i class='bx bx-bone'></i> <!--muestra el icono huella o hueso-->
+            </div>
+
+            <!-- Tarjeta del Formulario -->
+            <div class="auth-card">
+                <h2>Registro</h2>
+                <p class="auth-subtitle">Crea tu cuenta para acceder al sistema</p>
+
+                <form class="auth-form">
+                    <!-- Nombre Completo -->
+                    <div class="input-icon-group">
+                        <i class='bx bx-user icon'></i>
+                        <input type="text" placeholder="Nombre completo" required>
+                    </div>
+
+                    <!-- Correo Electrónico -->
+                    <div class="input-icon-group">
+                        <i class='bx bx-envelope icon'></i>
+                        <input type="email" placeholder="Correo electrónico" required>
+                    </div>
+
+                    <!-- Contraseña -->
+                    <div class="input-icon-group">
+                        <i class='bx bx-lock-alt icon'></i>
+                        <input type="password" placeholder="Contraseña" required>
+                        <i class='bx bx-show toggle-password'></i>
+                    </div>
+
+                    <!-- Confirmar Contraseña -->
+                    <div class="input-icon-group">
+                        <i class='bx bx-lock-alt icon'></i>
+                        <input type="password" placeholder="Confirmar contraseña" required>
+                        <i class='bx bx-show toggle-password'></i>
+                    </div>
+
+                <!-- Enlace a Iniciar Sesión -->
+                <p class="auth-footer">
+                    ¿Ya tienes cuenta? <a href="{{ route('login') }}">Iniciar sesión</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
