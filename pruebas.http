@@ -1,0 +1,79 @@
+@baseUrl = http://localhost:8000
+
+### 1. Ruta raíz / (Éxito 200)
+GET {{baseUrl}}/
+
+### 2. Ruta /ping (Éxito 200)
+GET {{baseUrl}}/api/ping
+Accept: application/json
+
+### 3. Listar todas las citas (Éxito 200)
+GET {{baseUrl}}/api/citas
+Accept: application/json
+
+### 4. Listar citas con filtro válido por estado (Éxito 200)
+GET {{baseUrl}}/api/citas?estado=pendiente
+Accept: application/json
+
+### 5. Listar citas con filtro inválido (Error 400)
+GET {{baseUrl}}/api/citas?veterinario_asignado=abc
+Accept: application/json
+
+### 6. Obtener resumen de citas (Éxito 200)
+GET {{baseUrl}}/api/citas/resumen
+Accept: application/json
+
+### 7. Obtener cita por ID existente (Éxito 200)
+GET {{baseUrl}}/api/citas/1
+Accept: application/json
+
+### 8. Obtener cita con ID no numérico (Error 400)
+GET {{baseUrl}}/api/citas/abc
+Accept: application/json
+
+### 9. Obtener cita con ID inexistente (Error 404)
+GET {{baseUrl}}/api/citas/99999
+Accept: application/json
+
+### 10. Crear nueva cita con datos válidos (Éxito 201)
+POST {{baseUrl}}/api/citas
+Content-Type: application/json
+Accept: application/json
+
+{
+  "fecha_hora": "2026-11-25 10:30:00",
+  "veterinario_asignado": 1,
+  "paciente": 1,
+  "servicio": 1,
+  "estado": "pendiente"
+}
+
+### 11. Crear cita con campos faltantes o inválidos (Error 400)
+POST {{baseUrl}}/api/citas
+Content-Type: application/json
+Accept: application/json
+
+{
+  "fecha_hora": "fecha-mala",
+  "estado": ""
+}
+
+### 12. Eliminar cita existente - devuelve el elemento (Éxito 200)
+DELETE {{baseUrl}}/api/citas/1
+Accept: application/json
+
+### 13. Eliminar cita con ID no numérico (Error 400)
+DELETE {{baseUrl}}/api/citas/xyz
+Accept: application/json
+
+### 14. Eliminar cita inexistente (Error 404)
+DELETE {{baseUrl}}/api/citas/99999
+Accept: application/json
+
+### 15. Ruta general inexistente (Error 404 general)
+GET {{baseUrl}}/api/ruta-que-no-existe
+Accept: application/json
+
+### 16. Ruta que falla a propósito (Error 500 sin exponer detalles)
+GET {{baseUrl}}/api/error-prueba
+Accept: application/json
