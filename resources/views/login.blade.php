@@ -61,7 +61,7 @@
         
         <div class="divider"></div>
 
-       <!-- <a href="{{ route('registro') }}">Crear cuenta nueva</a>-->
+       <a href="{{ route('nuevo.usuario') }}">Registrarse</a>
       </form>
     </div>
   </div>

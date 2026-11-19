@@ -48,7 +48,9 @@ Route::post('/logout', function (Request $request) {
 })->name('logout');
 
 // 2. REGISTRO DE NUEVO USUARIO (nuevoUS.blade.php)
-Route::get('/nuevo-usuario', [VeterinarioController::class, 'create'])->name('registro');
+Route::get('/nuevo-usuario', function () {
+    return view('nuevoUS');
+})->name('nuevo.usuario');
 Route::post('/nuevo-usuario', [VeterinarioController::class, 'store'])->name('registro.store');
 
 // 3. VISTA PRINCIPAL / AGENDAR CITA (index.blade.php)
