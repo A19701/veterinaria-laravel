@@ -28,25 +28,30 @@
     <!-- Lado Derecho: Tarjeta con Formulario de Login -->
     <div class="login-card">
       <h2>Iniciar sesión</h2>
-
-      <form action="{{ route('home') }}" method="GET" class="login-form">
+      @if (session('success'))
+                <div class="alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+      <form action="{{ route('login.submit') }}" method="POST" class="login-form">
         <!-- Campo Usuario -->
+         @csrf
         <div class="input-icon-group">
           <i class="fa-regular fa-user icon"></i>
-          <input type="text" placeholder="Usuario" required>
+          <input type="text" name="email" value="{{ old('email') }}" placeholder="Usuario" required>
         </div>
 
         <!-- Campo Contraseña -->
         <div class="input-icon-group">
           <i class="fa-solid fa-lock icon"></i>
-          <input type="password" placeholder="Contraseña" required>
+          <input type="password" name="password" placeholder="Contraseña" required>
           <i class="fa-regular fa-eye toggle-password"></i>
         </div>
 
         <!-- Opciones adicionales: Recordar usuario y Contraseña -->
         <div class="login-options">
           <label>
-            <input type="checkbox"> Recordar usuario
+            <input type="checkbox" name="remember"> Recordar usuario
           </label>
           <a href="#" class="forgot-link">¿Olvidaste tu contraseña?</a>
         </div>
@@ -56,7 +61,7 @@
         
         <div class="divider"></div>
 
-        
+       <!-- <a href="{{ route('registro') }}">Crear cuenta nueva</a>-->
       </form>
     </div>
   </div>

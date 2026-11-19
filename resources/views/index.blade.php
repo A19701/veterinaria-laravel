@@ -60,8 +60,9 @@
         </div>
 
         <div class="cita-card">
-         <form action="{{ route('citaex') }}" method="GET" class="formulario-grid">
-    
+         <form action="{{ route('citas.store') }}" method="POST" class="formulario-grid">
+    @csrf
+      
             <div class="form-group">
               <label for="dueno">Nombre del dueño</label>
               <input type="text" id="dueno" placeholder="Nombre completo" required>

@@ -4,62 +4,38 @@ namespace App\Http\Controllers;
 
 use App\Models\Veterinario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class VeterinarioController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+{
+    return view('nuevoUS');
+}
     public function store(Request $request)
-    {
-        //
-    }
+{
+    $data = $request->validate([
+        'nombre' => ['required', 'string', 'max:100'],
+        'apellidos' => ['required', 'string', 'max:100'],
+        'especialidad' => ['required', 'string', 'max:100'],
+        'telefono' => ['required', 'string', 'max:30'],
+        'email' => ['required', 'email', 'max:150'],
+        'password' => ['required', 'string', 'min:6', 'confirmed'],
+    ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Veterinario $veterinario)
-    {
-        //
-    }
+    DB::table('veterinario')->insert([
+        'nombre' => $data['nombre'],
+        'apellidos' => $data['apellidos'],
+        'especialidad' => $data['especialidad'],
+        'telefono' => $data['telefono'],
+        'email' => $data['email'],
+        'password' => Hash::make($data['password']),
+    ]);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Veterinario $veterinario)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Veterinario $veterinario)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Veterinario $veterinario)
-    {
-        //
-    }
+    return redirect()
+        ->route('login')
+        ->with('success', 'Veterinario registrado correctamente. Ya puedes iniciar sesión.');
+}
+   
 }

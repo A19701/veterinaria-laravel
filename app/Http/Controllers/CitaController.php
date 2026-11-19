@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cita;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class CitaController extends Controller
@@ -41,7 +42,37 @@ class CitaController extends Controller
 
         return response()->json($query->get(), 200);
     }
+     
+    public function create()
+    {
+        $mascotas = DB::table('mascota_paciente')->get();
+        $servicios = DB::table('servicio')->get();
+        $veterinarios = DB::table('veterinario')->get();
 
+        return view('index', compact('mascotas', 'servicios', 'veterinarios'));
+    }
+
+    public function mostrarCitas()
+    {
+        $citas = DB::table('citas')
+            ->join('mascota_paciente', 'citas.paciente', '=', 'mascota_paciente.id_mascota')
+            ->join('servicio', 'citas.servicio', '=', 'servicio.id_servicio')
+            ->join('veterinario', 'citas.veterinario_asignado', '=', 'veterinario.id_veterinario')
+            ->select(
+                'citas.id_cita',
+                'citas.fecha_hora',
+                'citas.estado',
+                'mascota_paciente.nombre as mascota_nombre',
+                'mascota_paciente.especie',
+                'servicio.nombre_servicio',
+                'veterinario.nombre as vet_nombre',
+                'veterinario.apellidos as vet_apellidos'
+            )
+            ->orderBy('citas.fecha_hora', 'asc')
+            ->get();
+
+        return view('citas', compact('citas'));
+    }
     // GET /api/citas/resumen
     public function resumen()
     {
@@ -73,30 +104,38 @@ class CitaController extends Controller
         return response()->json($cita, 200);
     }
 
-    // POST /api/citas
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'fecha_hora'           => 'required|date',
-            'veterinario_asignado' => 'required|exists:veterinario,id_veterinario',
-            'paciente'             => 'required|exists:mascota_paciente,id_mascota',
-            'servicio'             => 'required|exists:servicio,id_servicio',
-            'estado'               => 'required|string|max:50',
-        ]);
+   public function store(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'fecha' => ['required', 'date'],
+        'hora' => ['required', 'string'],
+        'veterinario_asignado' => ['required', 'integer', 'exists:veterinario,id_veterinario'],
+        'paciente' => ['required', 'integer', 'exists:mascota_paciente,id_mascota'],
+        'servicio' => ['required', 'integer', 'exists:servicio,id_servicio'],
+        'estado' => ['nullable', 'string', 'max:50'],
+    ]);
 
-        // Retorno temprano con 400 si falta algún campo o es inválido
-        if ($validator->fails()) {
-            return response()->json([
-                'error' => 'Datos de entrada inválidos',
-                'detalles' => $validator->errors()
-            ], 400);
-        }
-
-        $cita = Cita::create($validator->validated());
-
-        return response()->json($cita, 201);
+    if ($validator->fails()) {
+        return back()
+            ->withErrors($validator)
+            ->withInput();
     }
 
+    $data = $validator->validated();
+    $horaFormateada = strlen($data['hora']) === 5 ? $data['hora'] . ':00' : $data['hora'];
+
+    $cita = Cita::create([
+        'fecha_hora' => $data['fecha'] . ' ' . $horaFormateada,
+        'veterinario_asignado' => $data['veterinario_asignado'],
+        'paciente' => $data['paciente'],
+        'servicio' => $data['servicio'],
+        'estado' => $data['estado'] ?? 'programada',
+    ]);
+
+    return redirect()
+        ->route('citaex')
+        ->with('cita_creada', 'Cita #' . $cita->id_cita . ' registrada correctamente.');
+}
     // PUT /api/citas/{id}
     public function update(Request $request, $id)
     {

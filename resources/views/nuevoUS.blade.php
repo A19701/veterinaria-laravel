@@ -28,43 +28,67 @@
             </div>
 
             <!-- Tarjeta del Formulario -->
-            <div class="auth-card">
+           <div class="auth-card">
                 <h2>Registro</h2>
                 <p class="auth-subtitle">Crea tu cuenta para acceder al sistema</p>
 
-                <form class="auth-form">
-                    <!-- Nombre Completo -->
+                @if ($errors->any())
+                    <div class="alert-error">
+                        {{ $errors->first() }}
+                    </div>
+                @endif
+
+                @if (session('success'))
+                    <div class="alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                <form action="{{ route('registro.store') }}" method="POST" class="auth-form">
+                    @csrf
+
                     <div class="input-icon-group">
-                        <i class='bx bx-user icon'></i>
-                        <input type="text" placeholder="Nombre completo" required>
+                        <i class="bx bx-user"></i>
+                        <input type="text" name="nombre" value="{{ old('nombre') }}" placeholder="Nombre" required>
                     </div>
 
-                    <!-- Correo Electrónico -->
                     <div class="input-icon-group">
-                        <i class='bx bx-envelope icon'></i>
-                        <input type="email" placeholder="Correo electrónico" required>
+                        <i class="bx bx-user"></i>
+                        <input type="text" name="apellidos" value="{{ old('apellidos') }}" placeholder="Apellidos" required>
                     </div>
 
-                    <!-- Contraseña -->
                     <div class="input-icon-group">
-                        <i class='bx bx-lock-alt icon'></i>
-                        <input type="password" placeholder="Contraseña" required>
-                        <i class='bx bx-show toggle-password'></i>
+                        <i class="bx bx-briefcase"></i>
+                        <input type="text" name="especialidad" value="{{ old('especialidad') }}" placeholder="Especialidad" required>
                     </div>
 
-                    <!-- Confirmar Contraseña -->
                     <div class="input-icon-group">
-                        <i class='bx bx-lock-alt icon'></i>
-                        <input type="password" placeholder="Confirmar contraseña" required>
-                        <i class='bx bx-show toggle-password'></i>
+                        <i class="bx bx-phone"></i>
+                        <input type="text" name="telefono" value="{{ old('telefono') }}" placeholder="Teléfono" required>
                     </div>
 
-                <!-- Enlace a Iniciar Sesión -->
-                <p class="auth-footer">
-                    ¿Ya tienes cuenta? <a href="{{ route('login') }}">Iniciar sesión</a>
-                </p>
+                    <div class="input-icon-group">
+                        <i class="bx bx-envelope"></i>
+                        <input type="email" name="email" value="{{ old('email') }}" placeholder="Correo electrónico" required>
+                    </div>
+
+                    <div class="input-icon-group">
+                        <i class="bx bx-lock-alt"></i>
+                        <input type="password" name="password" placeholder="Contraseña" required>
+                    </div>
+
+                    <div class="input-icon-group">
+                        <i class="bx bx-lock-alt"></i>
+                        <input type="password" name="password_confirmation" placeholder="Confirmar contraseña" required>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Registrarse</button>
+                </form>
+
+                <div class="auth-footer">
+                    <p>¿Ya tienes cuenta? <a href="{{ route('login') }}">Iniciar sesión</a></p>
+                </div>
             </div>
-        </div>
     </div>
 
 </body>
